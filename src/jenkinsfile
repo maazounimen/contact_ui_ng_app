@@ -1,0 +1,35 @@
+pipeline {
+    agent any
+    tools {
+      nodejs "node16"
+    }
+
+    stages {
+        stage('version node') {
+           steps {
+             sh 'node --version'
+          }
+        }
+        stage('Checkout Front Code') {
+            steps {
+                dir('front') {
+                    script {
+                        git branch: params.BRANCHE, url: 'https://github.com/maazounimen/contact_ui_ng_app.git'
+                    }
+                }
+            }
+        }
+
+        stage('Checkout Code && Build angular') {
+            steps {
+                script{
+                    switch(params.BRANCHE){
+                        case "main": sh "npm install && npm run build";break
+                    }
+                }
+            }
+        }
+
+    }
+
+}
