@@ -59,7 +59,6 @@ pipeline {
                     ]
                 ],
                 credentialsId: 'nexus_pwd',
-                groupId: 'org.m2i',
                 nexusUrl: '192.168.1.134:8081',
                 nexusVersion: 'nexus3',
                 protocol: 'http',
