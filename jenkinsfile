@@ -48,26 +48,28 @@ pipeline {
             }
         }
 
-        stage('Nexus') {
-            steps {
-                nexusArtifactUploader artifacts: [
-                    [
-                        artifactId: 'contact-ui',
-                        classifier: '',
-                        file: "${env.ARTIFACT_FILE}",
-                        type: 'zip'
-                    ]
-                ],
-                credentialsId: 'nexus_pwd',
-                nexusUrl: 'http://192.168.1.134:8081',
-                nexusVersion: 'nexus3',
-                protocol: 'http',
-                repository: 'contact-ui',
-                version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}"
+    stage('Nexus') {
+        steps {
+            script {
+                nexusArtifactUploader(
+                    artifacts: [
+                        [
+                            artifactId: 'contact-ui',
+                            classifier: '',
+                            file: env.ARTIFACT_FILE,
+                            type: 'zip'
+                        ]
+                    ],
+                    credentialsId: 'nexus_pwd',
+                    nexusUrl: 'http://192.168.1.134:8081',
+                    nexusVersion: 'nexus3',
+                    protocol: 'http',
+                    repository: 'contact-ui',
+                    version: "${env.BUILD_ID}-${env.BUILD_TIMESTAMP}"
+                )
             }
         }
     }
-
     
 
 }
