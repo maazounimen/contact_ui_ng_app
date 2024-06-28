@@ -30,6 +30,26 @@ pipeline {
             }
         }
 
+                stage('SonarQube Analysis') {
+            environment {
+                SCANNER_HOME = tool name: 'sonar_scanner', type: 'hudson.plugins.sonar.SonarRunnerInstallation'
+            }
+            steps {
+                withSonarQubeEnv('sonar_server') {
+                    sh """
+                        ${SCANNER_HOME}/bin/sonar-scanner \
+                        -Dsonar.projectKey=contact-ui \
+                        -Dsonar.sources=src \
+                        -Dsonar.exclusions=node_modules/**,dist/** \
+                        -Dsonar.tests=src \
+                        -Dsonar.test.inclusions="**/*.spec.ts" \
+                        -Dsonar.typescript.lcov.reportPaths=coverage/lcov.info \
+                        -Dsonar.testExecutionReportPaths=coverage/test-reporter.xml
+                    """
+                }
+            }
+        }
+
     }
 
 }
